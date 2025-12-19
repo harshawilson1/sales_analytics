@@ -1,11 +1,13 @@
 import streamlit as st
 import pandas as pd
-from snowflake.snowpark.context import get_active_session
+
+from snowflake.snowpark import Session
 
 # ---------------------------
-# Snowflake session (provided by Streamlit)
+# Snowflake session (Streamlit Cloud)
 # ---------------------------
-session = get_active_session()
+cfg = st.secrets["connections"]["snowflake"]
+session = Session.builder.configs(cfg).create()
 
 # ---------------------------
 # Streamlit page config
