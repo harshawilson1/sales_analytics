@@ -63,11 +63,19 @@ date_range = st.sidebar.date_input(
     "Select Date Range", [min_date, max_date]
 )
 
-filtered_df = df[
-    (df["PRODUCT"].isin(selected_products))
-    & (df["SALE_DATE"] >= pd.to_datetime(date_range[0]))
-    & (df["SALE_DATE"] <= pd.to_datetime(date_range[1]))
-]
+# Ensure date_range has 2 dates
+if len(date_range) == 2:
+    start_date = pd.to_datetime(date_range[0])
+    end_date = pd.to_datetime(date_range[1])
+    filtered_df = df[
+        (df["PRODUCT"].isin(selected_products))
+        & (df["SALE_DATE"] >= start_date)
+        & (df["SALE_DATE"] <= end_date)
+    ]
+else:
+    st.warning("Please select a start and end date.")
+    filtered_df = pd.DataFrame()  # empty df to avoid crashes
+
 
 # ---------------------------
 # Display KPIs and Charts
